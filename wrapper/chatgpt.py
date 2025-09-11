@@ -7,6 +7,9 @@ from uuid         import uuid4
 from json         import loads
 from time         import time
 from typing       import Any
+from base64       import b64decode
+from PIL import Image
+from io import BytesIO
 
 
 class ChatGPT:
@@ -553,7 +556,161 @@ class ChatGPT:
         self.data["parent_message_id"] = Utils.between(conversation_request.text, '"message_id": "', '"')
         self.response = self._parse_event_stream(conversation_request.text)
 
+    def upload_image(self, image: str) -> None:
         
+        self.session.headers = Headers.REQUIREMENTS
+        self.session.headers.update({
+            'oai-client-version': self.data["prod"],
+            'oai-device-id': self.data["device-id"],
+        })
+        
+        self.file_name: str = str(uuid4())
+        
+        if image.startswith("data:image"):
+            image = image.split(",")[1]
+            
+        self.file_size: int = len(b64decode(image))
+        self.width, self.height = Image.open(BytesIO(b64decode(image))).size
+        
+        image_data: dict = {
+            'file_name': f'{self.file_name}.png',
+            'file_size': self.file_size,
+            'use_case': 'multimodal',
+            'timezone_offset_min': self.timezone_offset,
+            'reset_rate_limits': False,
+        }
+        file_request: requests.models.Response = self.session.post('https://chatgpt.com/backend-anon/files', json=image_data)
+        
+        self.data["file_id"] = file_request.json().get("file_id")
+        upload_url: str = file_request.json().get("upload_url")
+        
+        self.session.headers = Headers.FILE
+        upload_request: requests.models.Response = self.session.put(upload_url, data=b64decode(image))
+
+        self.session.headers = Headers.REQUIREMENTS
+        self.session.headers.update({
+            'oai-client-version': self.data["prod"],
+            'oai-device-id': self.data["device-id"],
+        })
+        
+        process_data: dict = {
+            'file_id': self.data["file_id"],
+            'use_case': 'multimodal',
+            'index_for_retrieval': False,
+            'file_name': f'{self.file_name}.png',
+        }
+        
+        process_request: requests.models.Response = self.session.post('https://chatgpt.com/backend-anon/files/process_upload_stream', json=process_data)
+        
+        if "Succeeded processing " in process_request.text:
+            return
+        else:
+            Log.Error("Something went wrong while uploading image")
+        
+        
+        
+    def start_with_image(self, message: str, image: str) -> None:
+        
+        self._get_tokens()
+        conduit_token: str = self.get_conduit()
+        self.upload_image(image)
+        
+        time_1: int = randint(6000, 9000)
+        proof_token: str = Challenges.solve_pow(self.data["proofofwork"]["seed"], self.data["proofofwork"]["difficulty"], self.data["config"])
+        
+        turnstile_token: str = VM.get_turnstile(self.data["bytecode"], self.data["vm_token"], str(self.ip_info[:-1]))
+
+        self.session.headers = Headers.CONVERSATION
+        self.session.headers.update({
+            'oai-client-version': self.data["prod"],
+            'oai-device-id': self.data["device-id"],
+            'oai-echo-logs': f'0,{time_1},1,{time_1 + randint(1000, 1200)}',
+            'openai-sentinel-chat-requirements-token': self.data["token"],
+            'openai-sentinel-proof-token': proof_token,
+            'openai-sentinel-turnstile-token': turnstile_token,
+            'x-conduit-token': conduit_token,
+        })
+
+        conversation_data: dict = {
+            'action': 'next',
+            'messages': [
+                {
+                    'id': str(uuid4()),
+                    'author': {
+                        'role': 'user',
+                    },
+                    'create_time': round(time(), 3),
+                    'content': {
+                        'content_type': 'multimodal_text',
+                        'parts': [
+                            {
+                                'content_type': 'image_asset_pointer',
+                                'asset_pointer': f'file-service://{self.data["file_id"]}',
+                                'size_bytes': self.file_size,
+                                'width': self.width,
+                                'height': self.height,
+                            },
+                            message,
+                        ],
+                    },
+                    'metadata': {
+                        'attachments': [
+                            {
+                                'id': self.data["file_id"],
+                                'size': self.file_size,
+                                'name': f'{self.file_name}.png',
+                                'mime_type': 'image/png',
+                                'width': self.width,
+                                'height': self.height,
+                                'source': 'local',
+                            },
+                        ],
+                        'selected_github_repos': [],
+                        'selected_all_github_repos': False,
+                        'serialization_metadata': {
+                            'custom_symbol_offsets': [],
+                        },
+                    },
+                },
+            ],
+            'parent_message_id': 'client-created-root',
+            'model': 'auto',
+            'timezone_offset_min': self.timezone_offset,
+            'timezone': self.ip_info[5],
+            'history_and_training_disabled': True,
+            'conversation_mode': {
+                'kind': 'primary_assistant',
+            },
+            'enable_message_followups': True,
+            'system_hints': [],
+            'supports_buffering': True,
+            'supported_encodings': [
+                'v1',
+            ],
+            'client_contextual_info': {
+                'is_dark_mode': True,
+                'time_since_loaded': randint(3, 6),
+                'page_height': 1219,
+                'page_width': 3440,
+                'pixel_ratio': 1,
+                'screen_height': 1440,
+                'screen_width': 3440,
+            },
+            'paragen_cot_summary_display_override': 'allow',
+            'force_parallel_switch': 'auto',
+        }
+        
+        conversation_request: requests.models.Response = self.session.post('https://chatgpt.com/backend-anon/f/conversation', json=conversation_data)
+        self.session.cookies.update(conversation_request.cookies)
+        
+        if 'Unusual activity' in conversation_request.text:
+            Log.Error("Your IP got flagged by chatgpt, retry with a new IP")
+            exit(conversation_request.status_code)
+        
+        self.data["conversation_id"] = Utils.between(conversation_request.text, '"conversation_id": "', '"')
+        self.data["parent_message_id"] = Utils.between(conversation_request.text, '"message_id": "', '"')
+        self.response = self._parse_event_stream(conversation_request.text)
+    
     def hold_conversation(self, message: str, new: bool = True) -> None:
         self.index = 2000
         
@@ -651,7 +808,11 @@ class ChatGPT:
         
         self.response = self._parse_event_stream(conversation_request.text)
     
-    def ask_question(self, message: str) -> str:
-        self.start_conversation(message)
+    def ask_question(self, message: str, image: str = None) -> str:
+        
+        if not image:
+            self.start_conversation(message)
+        else:
+            self.start_with_image(message, image)
         
         return self.response
