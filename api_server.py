@@ -10,6 +10,7 @@ app = FastAPI()
 class ConversationRequest(BaseModel):
     proxy: str
     message: str
+    image: str = None
 
 def format_proxy(proxy: str) -> str:
     
@@ -42,7 +43,11 @@ async def create_conversation(request: ConversationRequest):
     proxy = format_proxy(request.proxy)
     
     try:
-        answer: str = ChatGPT(proxy).ask_question(request.message)
+        if request.image:
+            answer: str = ChatGPT(proxy).ask_question(request.message, request.image)
+        else:
+            answer: str = ChatGPT(proxy).ask_question(request.message)
+        
         return {
             "status": "success",
             "result": answer
