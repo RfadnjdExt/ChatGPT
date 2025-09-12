@@ -480,7 +480,7 @@ class ChatGPT:
         
         time_1: int = randint(6000, 9000)
         proof_token: str = Challenges.solve_pow(self.data["proofofwork"]["seed"], self.data["proofofwork"]["difficulty"], self.data["config"])
-        
+        Log.Success(f"Solved POW: {proof_token}")
         turnstile_token: str = VM.get_turnstile(self.data["bytecode"], self.data["vm_token"], str(self.ip_info[:-1]))
 
         self.session.headers = Headers.CONVERSATION

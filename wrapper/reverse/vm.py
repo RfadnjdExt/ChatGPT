@@ -78,5 +78,5 @@ class VM:
                 print(f"UNKNOWN ITEM WTFFFF {key},{value}")
         
         turnstile_token: str = b64encode(VM.xor(dumps(payload, separators=(',', ':')), xor_key).encode("utf-8")).decode("utf-8")
-
+        
         return turnstile_token
