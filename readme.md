@@ -85,7 +85,7 @@ The system makes several authenticated requests to ChatGPT endpoints:
 
 ## VM and Turnstile Token System
 
-The core of this implementation is the VM system that solves Cloudflare Turnstile challenges used in the `openai-sentinel-turnstile-token` header.
+The core of this implementation is the VM system that solves OpenAI Turnstile challenges used in the `openai-sentinel-turnstile-token` header.
 
 ### How It Works
 
