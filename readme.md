@@ -141,6 +141,8 @@ It handles:
 - Browser API simulation (window, document objects)
 - Three-stage decompilation process with nested encrypted layers
 
+Also check decompiled.js for the full decompiled VM output.
+
 ![alt text](images/image-1.png)
 
 ### VM Execution
