@@ -1,6 +1,6 @@
 # ChatGPT Reverse
 
-A reverse-engineered implementation of ChatGPT that bypasses OpenAI's API system. This project provides free access to ChatGPT as API by emulating browser behavior and solving Cloudflare Turnstile challenges through VM decompilation.
+A reverse-engineered implementation of ChatGPT that bypasses OpenAI's API system. This project provides free access to ChatGPT as API by emulating browser behavior and solving OpenAI Turnstile challenge through VM decompilation.
 
 ## Quick Start
 
