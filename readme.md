@@ -58,7 +58,7 @@ print(response)
 # With image
 response = client.ask_question("What's in this image?", "data:image/png;base64,...")
 ```
-![alt text](image.png)
+![alt text](images/image.png)
 
 ## Request Flow and Authentication
 
@@ -82,7 +82,6 @@ The system makes several authenticated requests to ChatGPT endpoints:
   - `x-conduit-token`: From conduit preparation
   - `oai-echo-logs`: Timing data for behavioral analysis
 
-*[Image reference: Request flow diagram]*
 
 ## VM and Turnstile Token System
 
@@ -142,7 +141,7 @@ It handles:
 - Browser API simulation (window, document objects)
 - Three-stage decompilation process with nested encrypted layers
 
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
 ### VM Execution
 
@@ -167,7 +166,7 @@ The VM then builds the payload by providing realistic values:
 - **Storage keys**: Realistic localStorage key patterns
 - **Random values**: Self-XOR encrypted random numbers
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 
 ### Proof-of-Work Challenge
 
@@ -195,7 +194,7 @@ All challenge solutions work together:
 3. **Turnstile Token**: VM-generated from bytecode, proves browser legitimacy
 4. **Conduit Token**: Session-specific token for conversation context
 
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
 ## Image Processing
 
@@ -229,7 +228,7 @@ The system handles image uploads through a multi-step process:
 
 Proxy format: `http://username:password@host:port`
 
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 
 ## Troubleshooting
 
