@@ -1,6 +1,6 @@
 # ChatGPT Reverse
 
-A reverse-engineered implementation of ChatGPT that bypasses OpenAI's API system. This project provides free access to ChatGPT as API by emulating browser behavior and solving Cloudflare Turnstile challenges through VM decompilation.
+A reverse-engineered implementation of ChatGPT that bypasses OpenAI's API system. This project provides free access to ChatGPT as API by emulating browser behavior and solving OpenAI Turnstile challenge through VM decompilation.
 
 ## Quick Start
 
@@ -85,7 +85,7 @@ The system makes several authenticated requests to ChatGPT endpoints:
 
 ## VM and Turnstile Token System
 
-The core of this implementation is the VM system that solves Cloudflare Turnstile challenges used in the `openai-sentinel-turnstile-token` header.
+The core of this implementation is the VM system that solves OpenAI Turnstile challenges used in the `openai-sentinel-turnstile-token` header.
 
 ### How It Works
 
