@@ -1,7 +1,7 @@
 const { JSDOM } = require("jsdom");
-const dom = new JSDOM("<!DOCTYPE html><p>Hello world</p>", {url: "https://chatgpt.com/",});
-const window = dom.window
-var mem = {}
+const dom = new JSDOM("<!DOCTYPE html><p>Hello world</p>", { url: "https://chatgpt.com/" });
+const window = dom.window;
+var mem = {};
 function XOR_STR(e, t) {
         e = String(e);
         t = String(t);
@@ -10,265 +10,254 @@ function XOR_STR(e, t) {
             n += String.fromCharCode(e.charCodeAt(r) ^ t.charCodeAt(r % t.length));
         return n;
     }
-var var_12_36 = 67.26;
-var var_44_22 = "set";
-var var_44_22 = window["Reflect"]["set"]
-var var_12_36 = XOR_STR(var_12_36, var_12_36)
-var var_12_36 = btoa("" + var_12_36)
-var var_90_31 = 96.17;
-var var_68_5 = 68.06;
-var var_65_13 = "create";
-var var_68_5 = 48.13;
-var var_65_13 = window["Object"]["create"]
-var var_38_33 = "localStorage";
-var var_38_33 = window["localStorage"]
-var var_12_36 = XOR_STR(var_12_36, var_68_5)
-var var_12_36 = btoa("" + var_12_36)
-var var_61_04 = 2000;
-var var_44_15 = "now";
-var var_44_15 = window["performance"]["now"].bind(window["performance"])
-var var_12_36 = 75.48;
-var var_90_37 = var_44_15()
-var var_79_37 = null;
-var var_31_98 = var_65_13(var_79_37)
-var var_68_5 = XOR_STR(var_68_5, var_68_5)
-var var_68_5 = btoa("" + var_68_5)
-var var_21_83 = "navigator";
-var var_21_83 = window["navigator"]
-var var_24_71 = "b2sfHgQCHA4DBBoJFhwVBwEACQ1pHA5rAg0eFwUZFAMfHgwMHA4EBBoBGm0ZFGsWARsBBwIQDAceGQQZFAMfHgwMbXM=";
-var var_90_31 = XOR_STR(var_90_31, var_68_5)
-var var_90_31 = btoa("" + var_90_31)
-var var_12_36 = 39.67;
-var var_5_15 = 0.8;
-var var_94_64 = 0.1;
-var var_41_14 = 6.92;
-var var_14_72 = 17.35;
-var var_5_15 = Array.isArray(var_5_15) ? (var_5_15.push(var_94_64), var_5_15) : var_5_15 + var_94_64
-var var_5_15 = XOR_STR(var_5_15, var_41_14)
-var var_5_15 = btoa("" + var_5_15)
-var_31_98[var_14_72] = var_5_15
-var var_33_42 = [];
-var var_90_31 = 14.11;
-var var_36_08 = "__reactRouterContext";
-var var_12_36 = 67.27;
-var var_36_08 = window[var_36_08]
-var var_6_28 = 25.89;
-var var_90_4 = "state";
-try { mem[var_90_4] = var_36_08[var_90_4]; } catch(r) { var_33_42 = "" + r; }
-var var_94_6 = "loaderData";
-try { mem[var_94_6] = var_90_4[var_94_6]; } catch(r) { var_33_42 = "" + r; }
-var var_42_78 = 78.92;
-var var_90_31 = btoa("" + var_90_31)
-var_31_98[var_42_78] = var_90_31
-var var_95_02 = "root";
-try { mem[var_95_02] = var_94_6[var_95_02]; } catch(r) { var_33_42 = "" + r; }
-var var_76_84 = "clientBootstrap";
-var var_68_5 = 67.98;
-try { mem[var_76_84] = var_95_02[var_76_84]; } catch(r) { var_33_42 = "" + r; }
-var var_6_35 = "cfConnectingIp";
-try { mem[var_6_35] = var_76_84[var_6_35]; } catch(r) { var_33_42 = "" + r; }
-var var_33_42 = Array.isArray(var_33_42) ? (var_33_42.push(var_6_35), var_33_42) : var_33_42 + var_6_35
-var var_49_49 = "cfIpCity";
-try { mem[var_49_49] = var_76_84[var_49_49]; } catch(r) { var_33_42 = "" + r; }
-var var_33_42 = Array.isArray(var_33_42) ? (var_33_42.push(var_49_49), var_33_42) : var_33_42 + var_49_49
-var var_8_82 = "userRegion";
-try { mem[var_8_82] = var_76_84[var_8_82]; } catch(r) { var_33_42 = "" + r; }
-var var_33_42 = Array.isArray(var_33_42) ? (var_33_42.push(var_8_82), var_33_42) : var_33_42 + var_8_82
-var var_68_5 = 5.57;
-var var_35_5 = "cfIpLatitude";
-try { mem[var_35_5] = var_76_84[var_35_5]; } catch(r) { var_33_42 = "" + r; }
-var var_33_42 = Array.isArray(var_33_42) ? (var_33_42.push(var_35_5), var_33_42) : var_33_42 + var_35_5
-var var_8_22 = "cfIpLongitude";
-try { mem[var_8_22] = var_76_84[var_8_22]; } catch(r) { var_33_42 = "" + r; }
-var var_90_31 = XOR_STR(var_90_31, var_6_28)
-var var_90_31 = btoa("" + var_90_31)
-var var_33_42 = Array.isArray(var_33_42) ? (var_33_42.push(var_8_22), var_33_42) : var_33_42 + var_8_22
-var var_33_42 = JSON.stringify(var_33_42)
-var var_33_42 = XOR_STR(var_33_42, var_41_14)
-var var_90_31 = 33.66;
-var var_33_42 = btoa("" + var_33_42)
-var var_65_3 = 26.8;
-var var_28_9 = 54.04;
-var var_68_5 = btoa("" + var_68_5)
-var_31_98[var_28_9] = var_68_5
-var_31_98[var_65_3] = var_33_42
-var var_68_5 = 64.03;
-var var_41_14 = 6.92;
-var var_77_58 = 90.85;
-var var_48_27 = "createElement";
-var var_38_47 = var_44_15()
-Math.abs(var_90_37 - var_38_47) > var_61_04 ? var_97_57 = var_24_71 : null
-var var_97_57 = var_97_57 !== void 0 ? (mem["58.29"] = "72.02", var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (var_44_22(var_31_98, mem["58.29"], var_38_47) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (atob("" + var_97_57) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (XOR_STR(var_97_57, mem["91.57"]) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (JSON.parse(var_97_57) || var_97_57) : var_97_57
-var var_48_27 = window["document"]["createElement"].bind(window["document"])
-var var_12_36 = 23.67;
-var var_96_64 = "div";
-var var_96_64 = var_48_27(var_96_64)
-var var_86_94 = "style";
-var var_86_94 = var_96_64["style"]
-var var_68_5 = XOR_STR(var_68_5, var_68_5)
-var var_68_5 = btoa("" + var_68_5)
-var var_3_26 = "hidden";
-var var_31_36 = "visibility";
-var var_68_5 = XOR_STR(var_68_5, var_68_5)
-var var_68_5 = btoa("" + var_68_5)
-var_86_94[var_31_36] = var_3_26
-var var_85_45 = "ariaHidden";
-var var_9_45 = true;
-var var_12_36 = XOR_STR(var_12_36, var_68_5)
-var var_12_36 = btoa("" + var_12_36)
-var_96_64[var_85_45] = var_9_45
-var var_95_1 = "position";
-var var_12_76 = "fixed";
-var_86_94[var_95_1] = var_12_76
-var var_21_14 = "Lucida Sans Unicode";
-var var_58_66 = "fontFamily";
-var var_12_36 = 17.67;
-var_86_94[var_58_66] = var_21_14
-var var_27_34 = "14px";
-var var_28_9 = 54.04;
-var var_68_5 = btoa("" + var_68_5)
-var_31_98[var_28_9] = var_68_5
-var var_43_88 = "fontSize";
-var_86_94[var_43_88] = var_27_34
-var var_29_51 = "K̬̤̄̆H̛̟̞̩́L̆̉";
-var var_54_07 = "innerText";
-var_96_64[var_54_07] = var_29_51
-var var_43_02 = "appendChild";
-var var_43_02 = window["document"]["body"]["appendChild"].bind(window["document"]["body"])
-var var_12_36 = 63.99;
-var_43_02(var_96_64)
-var var_69_4 = "getBoundingClientRect";
-var var_68_5 = 17.96;
-var var_69_4 = var_96_64["getBoundingClientRect"].bind(var_96_64)
-var var_91_22 = 51.36;
-var var_12_36 = btoa("" + var_12_36)
-var_31_98[var_91_22] = var_12_36
-var var_64_11 = var_69_4()
-var var_64_11 = JSON.stringify(var_64_11)
-var var_64_11 = XOR_STR(var_64_11, var_41_14)
-var var_64_11 = btoa("" + var_64_11)
-var_31_98[var_77_58] = var_64_11
-var var_2_86 = "removeChild";
-var var_2_86 = window["document"]["body"]["removeChild"].bind(window["document"]["body"])
-var var_38_47 = var_44_15()
-Math.abs(var_90_37 - var_38_47) > var_61_04 ? var_97_57 = var_24_71 : null
-var var_97_57 = var_97_57 !== void 0 ? (mem["58.29"] = "9.39", var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (var_44_22(var_31_98, mem["58.29"], var_38_47) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (atob("" + var_97_57) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (XOR_STR(var_97_57, mem["91.57"]) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (JSON.parse(var_97_57) || var_97_57) : var_97_57
-var_2_86(var_96_64)
-var var_94_27 = "location";
-var var_68_5 = 11.89;
-var var_94_27 = window["document"]["location"]
-var var_12_36 = 82.63;
-var var_89_33 = "";
-var var_89_33 = Array.isArray(var_89_33) ? (var_89_33.push(var_94_27), var_89_33) : var_89_33 + var_94_27
-var var_89_33 = XOR_STR(var_89_33, var_41_14)
-var var_91_22 = 51.36;
-var var_12_36 = btoa("" + var_12_36)
-var_31_98[var_91_22] = var_12_36
-var var_89_33 = btoa("" + var_89_33)
-var var_87_94 = 31.58;
-var var_68_5 = XOR_STR(var_68_5, var_12_36)
-var var_68_5 = btoa("" + var_68_5)
-var_31_98[var_87_94] = var_89_33
-var var_69_17 = 27.48;
-var var_68_5 = 8.28;
-var var_55_7 = 39.07;
-var var_1_79 = "random";
-var var_12_36 = 41.73;
-var var_1_79 = window["Math"]["random"]
-var var_48_37 = var_1_79()
-var var_68_5 = XOR_STR(var_68_5, var_12_36)
-var var_68_5 = btoa("" + var_68_5)
-var var_48_37 = XOR_STR(var_48_37, var_48_37)
-var var_38_47 = var_44_15()
-Math.abs(var_90_37 - var_38_47) > var_61_04 ? var_97_57 = var_24_71 : null
-var var_97_57 = var_97_57 !== void 0 ? (mem["58.29"] = "70.26", var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (var_44_22(var_31_98, mem["58.29"], var_38_47) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (atob("" + var_97_57) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (XOR_STR(var_97_57, mem["91.57"]) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (JSON.parse(var_97_57) || var_97_57) : var_97_57
-var var_48_37 = btoa("" + var_48_37)
-var_31_98[var_69_17] = var_48_37
-var var_12_36 = XOR_STR(var_12_36, var_68_5)
-var var_12_36 = btoa("" + var_12_36)
-var var_48_37 = var_1_79()
-var var_12_36 = 5.92;
-var_31_98[var_55_7] = var_48_37
-var var_49_65 = [];
-var var_90_31 = 90.23;
-var var_44_39 = "vendor";
-try { mem[var_44_39] = var_21_83[var_44_39]; } catch(r) { var_49_65 = "" + r; }
-var var_49_65 = Array.isArray(var_49_65) ? (var_49_65.push(var_44_39), var_49_65) : var_49_65 + var_44_39
-var var_52_72 = "platform";
-try { mem[var_52_72] = var_21_83[var_52_72]; } catch(r) { var_49_65 = "" + r; }
-var var_49_65 = Array.isArray(var_49_65) ? (var_49_65.push(var_52_72), var_49_65) : var_49_65 + var_52_72
-var var_74_13 = "deviceMemory";
-try { mem[var_74_13] = var_21_83[var_74_13]; } catch(r) { var_49_65 = "" + r; }
-var var_12_36 = 98.19;
-var var_49_65 = Array.isArray(var_49_65) ? (var_49_65.push(var_74_13), var_49_65) : var_49_65 + var_74_13
-var var_78_3 = "maxTouchPoints";
-var var_90_31 = XOR_STR(var_90_31, var_12_36)
-var var_90_31 = btoa("" + var_90_31)
-try { mem[var_78_3] = var_21_83[var_78_3]; } catch(r) { var_49_65 = "" + r; }
-var var_49_65 = Array.isArray(var_49_65) ? (var_49_65.push(var_78_3), var_49_65) : var_49_65 + var_78_3
-var var_90_31 = 17.58;
-var var_49_65 = JSON.stringify(var_49_65)
-var var_49_65 = XOR_STR(var_49_65, var_41_14)
-var var_49_65 = btoa("" + var_49_65)
-var var_87_95 = 18.52;
-var_31_98[var_87_95] = var_49_65
-var var_51_22 = 51.21;
-var var_69_99 = "keys";
-var var_69_99 = window["Object"]["keys"]
-var var_12_36 = 36.64;
-var var_35_97 = var_69_99(var_38_33)
-var var_91_22 = 51.36;
-var var_12_36 = btoa("" + var_12_36)
-var_31_98[var_91_22] = var_12_36
-var var_35_97 = XOR_STR(var_35_97, var_41_14)
-var var_35_97 = btoa("" + var_35_97)
-var var_38_47 = var_44_15()
-Math.abs(var_90_37 - var_38_47) > var_61_04 ? var_97_57 = var_24_71 : null
-var var_97_57 = var_97_57 !== void 0 ? (mem["58.29"] = "57.64", var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (var_44_22(var_31_98, mem["58.29"], var_38_47) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (atob("" + var_97_57) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (XOR_STR(var_97_57, mem["91.57"]) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (JSON.parse(var_97_57) || var_97_57) : var_97_57
-var_31_98[var_51_22] = var_35_97
-var var_31_41 = "length";
-var var_68_5 = 44.3;
-var var_31_41 = window["history"]["length"]
-var var_31_41 = XOR_STR(var_31_41, var_41_14)
-var var_31_41 = btoa("" + var_31_41)
-var var_51_17 = 37.38;
-var_31_98[var_51_17] = var_31_41
-var var_79_46 = "setItem";
-var var_79_46 = window["localStorage"]["setItem"].bind(window["localStorage"])
-var var_12_36 = 51.42;
-var var_38_47 = var_44_15()
-Math.abs(var_90_37 - var_38_47) > var_61_04 ? var_97_57 = var_24_71 : null
-var var_97_57 = var_97_57 !== void 0 ? (mem["58.29"] = "94.36", var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (var_44_22(var_31_98, mem["58.29"], var_38_47) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (atob("" + var_97_57) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (XOR_STR(var_97_57, mem["91.57"]) || var_97_57) : var_97_57
-var var_97_57 = var_97_57 !== void 0 ? (JSON.parse(var_97_57) || var_97_57) : var_97_57
-var var_52_86 = "1e8ff21b65255965";
-var var_90_31 = 34.09;
-var var_74_26 = 2;
-var var_6_28 = 78.79;
-var_79_46(var_52_86, var_74_26)
-var var_24_71 = var_24_71 !== void 0 ? (mem["91.57"] = "40.05", var_24_71) : var_24_71
-var var_12_36 = 14.63;
-var var_24_71 = var_24_71 !== void 0 ? (atob("" + var_24_71) || var_24_71) : var_24_71
-var var_24_71 = var_24_71 !== void 0 ? (XOR_STR(var_24_71, mem["91.57"]) || var_24_71) : var_24_71
-var var_24_71 = var_24_71 !== void 0 ? (JSON.parse(var_24_71) || var_24_71) : var_24_71
-var var_31_98 = JSON.stringify(var_31_98)
-var var_31_98 = XOR_STR(var_31_98, var_41_14)
-console.log(btoa("" + var_31_98))
+    
+var var_10 = window;
+var var_94_65 = 65.82;
+var var_10_27 = "set";
+var var_10_27 = window["Reflect"]["set"];
+var var_17_41 = "create";
+var var_17_41 = window["Object"]["create"];
+var var_94_65 = XOR_STR(var_94_65, var_94_65);
+var var_94_65 = btoa("" + var_94_65);
+var var_86_99 = 86.06;
+var var_36_48 = "localStorage";
+var var_36_48 = window["localStorage"];
+var var_61_37 = 2000;
+var var_94_65 = XOR_STR(var_94_65, var_86_99);
+var var_94_65 = btoa("" + var_94_65);
+var var_33_97 = "now";
+var var_33_97 = window["performance"]["now"].bind(window["performance"]);
+var var_86_99 = 36.56;
+var var_43_93 = var_33_97();
+var var_52_53 = null;
+var var_82_53 = var_17_41(var_52_53);
+var var_86_99 = 50.43;
+var var_88_1 = "navigator";
+var var_67_47 = 29.45;
+var var_88_1 = window["navigator"];
+var var_20_04 = "aWIbBRYADwIRAAQXFwgUEgEbHwkLZAIRYwAKAAYJHhkWAxYHCgIRAAAXGwJlHhl1AwwcCRkdGAsNAAcNHhkXARYBCnMdGGkIFh8NAxUOCQocDB0dGAcMAAcLbxUOagsHFx0CFBIMGh8OARUOCQocDB1sZQ==";
+var var_86_99 = 69.58;
+var var_20_87 = 0.1;
+var var_47_28 = 0.6000000000000001;
+var var_55_63 = 48.51;
+var var_78_68 = 19.33;
+var var_20_87 = Array.isArray(var_20_87) ? (var_20_87.push(var_47_28), var_20_87) : var_20_87 + var_47_28;
+var var_20_87 = XOR_STR(var_20_87, var_55_63);
+var var_20_87 = btoa("" + var_20_87);
+var_82_53[var_78_68] = var_20_87;
+var var_33_8 = [];
+var var_82_7 = "vendor";
+try { mem[var_82_7] = var_88_1[var_82_7]; } catch(r) { var_33_8 = "" + r; }
+var var_33_8 = Array.isArray(var_33_8) ? (var_33_8.push(var_82_7), var_33_8) : var_33_8 + var_82_7;
+var var_34_13 = "platform";
+try { mem[var_34_13] = var_88_1[var_34_13]; } catch(r) { var_33_8 = "" + r; }
+var var_33_8 = Array.isArray(var_33_8) ? (var_33_8.push(var_34_13), var_33_8) : var_33_8 + var_34_13;
+var var_2_52 = "deviceMemory";
+var var_94_65 = 5.37;
+try { mem[var_2_52] = var_88_1[var_2_52]; } catch(r) { var_33_8 = "" + r; }
+var var_33_8 = Array.isArray(var_33_8) ? (var_33_8.push(var_2_52), var_33_8) : var_33_8 + var_2_52;
+var var_50_72 = "maxTouchPoints";
+try { mem[var_50_72] = var_88_1[var_50_72]; } catch(r) { var_33_8 = "" + r; }
+var var_33_8 = Array.isArray(var_33_8) ? (var_33_8.push(var_50_72), var_33_8) : var_33_8 + var_50_72;
+var var_33_8 = JSON.stringify(var_33_8);
+var var_33_8 = XOR_STR(var_33_8, var_55_63);
+var var_94_65 = XOR_STR(var_94_65, var_94_65);
+var var_94_65 = btoa("" + var_94_65);
+var var_33_8 = btoa("" + var_33_8);
+var var_57_57 = 56.04;
+var_82_53[var_57_57] = var_33_8;
+var var_55_63 = 48.51;
+var var_95_86 = 14.85;
+var var_5_35 = "createElement";
+var var_5_35 = window["document"]["createElement"].bind(window["document"]);
+var var_12_62 = "div";
+var var_12_62 = var_5_35(var_12_62);
+var var_89_53 = "style";
+var var_89_53 = var_12_62["style"];
+var var_70_3 = "hidden";
+var var_63_32 = "visibility";
+var_89_53[var_63_32] = var_70_3;
+var var_94_65 = 7.04;
+var var_46_21 = "ariaHidden";
+var var_94_65 = XOR_STR(var_94_65, var_94_65);
+var var_94_65 = btoa("" + var_94_65);
+var var_52_83 = "True";
+var_12_62[var_46_21] = var_52_83;
+var var_42_87 = "position";
+var var_41_49 = "fixed";
+var var_86_99 = 61.16;
+var_89_53[var_42_87] = var_41_49;
+var var_36_61 = "Impact";
+var var_22_22 = "fontFamily";
+var_89_53[var_22_22] = var_36_61;
+var var_65_3 = "10px";
+var var_2_62 = "fontSize";
+var var_77_52 = 43.91;
+var var_86_99 = btoa("" + var_86_99);
+var_82_53[var_77_52] = var_86_99;
+var_89_53[var_2_62] = var_65_3;
+var var_34_26 = "q̡̨̩̂̎ś̜̑̈G̦̭̟";
+var var_96_27 = "innerText";
+var_12_62[var_96_27] = var_34_26;
+var var_71_49 = "appendChild";
+var var_71_49 = window["document"]["body"]["appendChild"].bind(window["document"]["body"]);
+var var_86_99 = 93.87;
+var_71_49(var_12_62);
+var var_14_87 = "getBoundingClientRect";
+var var_94_65 = 90.6;
+var var_14_87 = var_12_62["getBoundingClientRect"].bind(var_12_62);
+var var_98_31 = var_14_87();
+var var_98_31 = JSON.stringify(var_98_31);
+var var_98_31 = XOR_STR(var_98_31, var_55_63);
+var var_98_31 = btoa("" + var_98_31);
+var_82_53[var_95_86] = var_98_31;
+var var_94_99 = "removeChild";
+var var_94_99 = window["document"]["body"]["removeChild"].bind(window["document"]["body"]);
+var_94_99(var_12_62);
+var var_4_41 = 31.17;
+var var_44_93 = "keys";
+var var_44_93 = window["Object"]["keys"];
+var var_86_99 = 76.2;
+var var_30_99 = var_44_93(var_36_48);
+var var_30_99 = XOR_STR(var_30_99, var_55_63);
+var var_30_99 = btoa("" + var_30_99);
+var_82_53[var_4_41] = var_30_99;
+var var_89_68 = "length";
+var var_89_68 = window["history"]["length"];
+var var_89_68 = XOR_STR(var_89_68, var_55_63);
+var var_89_68 = btoa("" + var_89_68);
+var var_87_58 = var_33_97();
+Math.abs(var_43_93 - var_87_58) > var_61_37 ? var_7_75 = var_20_04 : null;
+var var_7_75 = var_7_75 !== void 0 ? (mem["99.65"] = "42.93", var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (var_10_27(var_10_27, mem["82.53"], var_99_65, var_87_58) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (atob("" + var_7_75) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (XOR_STR(var_7_75, mem["42.48"]) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (JSON.parse(var_7_75) || var_7_75) : var_7_75;
+var var_31_65 = 7.1;
+var_82_53[var_31_65] = var_89_68;
+var var_67_47 = 47.64;
+var var_12_84 = [];
+var var_71_99 = "__reactRouterContext";
+var var_71_99 = window[var_71_99];
+var var_20_46 = "state";
+try { mem[var_20_46] = var_71_99[var_20_46]; } catch(r) { var_12_84 = "" + r; }
+var var_76_26 = "loaderData";
+var var_67_47 = XOR_STR(var_67_47, var_67_47);
+var var_67_47 = btoa("" + var_67_47);
+try { mem[var_76_26] = var_20_46[var_76_26]; } catch(r) { var_12_84 = "" + r; }
+var var_57_61 = "root";
+try { mem[var_57_61] = var_76_26[var_57_61]; } catch(r) { var_12_84 = "" + r; }
+var var_96_5 = "clientBootstrap";
+try { mem[var_96_5] = var_57_61[var_96_5]; } catch(r) { var_12_84 = "" + r; }
+var var_88_19 = "cfConnectingIp";
+try { mem[var_88_19] = var_96_5[var_88_19]; } catch(r) { var_12_84 = "" + r; }
+var var_67_47 = XOR_STR(var_67_47, var_67_47);
+var var_67_47 = btoa("" + var_67_47);
+var var_12_84 = Array.isArray(var_12_84) ? (var_12_84.push(var_88_19), var_12_84) : var_12_84 + var_88_19;
+var var_2_75 = "cfIpCity";
+try { mem[var_2_75] = var_96_5[var_2_75]; } catch(r) { var_12_84 = "" + r; }
+var var_21_21 = 97.61;
+var var_67_47 = btoa("" + var_67_47);
+var_82_53[var_21_21] = var_67_47;
+var var_87_58 = var_33_97();
+Math.abs(var_43_93 - var_87_58) > var_61_37 ? var_7_75 = var_20_04 : null;
+var var_7_75 = var_7_75 !== void 0 ? (mem["99.65"] = "81.04", var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (var_10_27(var_10_27, mem["82.53"], var_99_65, var_87_58) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (atob("" + var_7_75) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (XOR_STR(var_7_75, mem["42.48"]) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (JSON.parse(var_7_75) || var_7_75) : var_7_75;
+var var_12_84 = Array.isArray(var_12_84) ? (var_12_84.push(var_2_75), var_12_84) : var_12_84 + var_2_75;
+var var_67_47 = 40.24;
+var var_5_5 = "userRegion";
+try { mem[var_5_5] = var_96_5[var_5_5]; } catch(r) { var_12_84 = "" + r; }
+var var_12_84 = Array.isArray(var_12_84) ? (var_12_84.push(var_5_5), var_12_84) : var_12_84 + var_5_5;
+var var_60_65 = "cfIpLatitude";
+try { mem[var_60_65] = var_96_5[var_60_65]; } catch(r) { var_12_84 = "" + r; }
+var var_12_84 = Array.isArray(var_12_84) ? (var_12_84.push(var_60_65), var_12_84) : var_12_84 + var_60_65;
+var var_67_47 = 25.65;
+var var_98_73 = "cfIpLongitude";
+var var_21_21 = 97.61;
+var var_67_47 = btoa("" + var_67_47);
+var_82_53[var_21_21] = var_67_47;
+try { mem[var_98_73] = var_96_5[var_98_73]; } catch(r) { var_12_84 = "" + r; }
+var var_87_58 = var_33_97();
+Math.abs(var_43_93 - var_87_58) > var_61_37 ? var_7_75 = var_20_04 : null;
+var var_7_75 = var_7_75 !== void 0 ? (mem["99.65"] = "37.84", var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (var_10_27(var_10_27, mem["82.53"], var_99_65, var_87_58) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (atob("" + var_7_75) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (XOR_STR(var_7_75, mem["42.48"]) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (JSON.parse(var_7_75) || var_7_75) : var_7_75;
+var var_12_84 = Array.isArray(var_12_84) ? (var_12_84.push(var_98_73), var_12_84) : var_12_84 + var_98_73;
+var var_86_99 = 98.45;
+var var_12_84 = JSON.stringify(var_12_84);
+var var_12_84 = XOR_STR(var_12_84, var_55_63);
+var var_12_84 = btoa("" + var_12_84);
+var var_67_47 = 50.24;
+var var_30_69 = 75.89;
+var_82_53[var_30_69] = var_12_84;
+var var_87_58 = var_33_97();
+Math.abs(var_43_93 - var_87_58) > var_61_37 ? var_7_75 = var_20_04 : null;
+var var_7_75 = var_7_75 !== void 0 ? (mem["99.65"] = "36.65", var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (var_10_27(var_10_27, mem["82.53"], var_99_65, var_87_58) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (atob("" + var_7_75) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (XOR_STR(var_7_75, mem["42.48"]) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (JSON.parse(var_7_75) || var_7_75) : var_7_75;
+var var_20_41 = "location";
+var var_20_41 = window["document"]["location"];
+var var_19_37 = "";
+var var_19_37 = Array.isArray(var_19_37) ? (var_19_37.push(var_20_41), var_19_37) : var_19_37 + var_20_41;
+var var_94_65 = 36.78;
+var var_87_58 = var_33_97();
+Math.abs(var_43_93 - var_87_58) > var_61_37 ? var_7_75 = var_20_04 : null;
+var var_7_75 = var_7_75 !== void 0 ? (mem["99.65"] = "26.42", var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (var_10_27(var_10_27, mem["82.53"], var_99_65, var_87_58) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (atob("" + var_7_75) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (XOR_STR(var_7_75, mem["42.48"]) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (JSON.parse(var_7_75) || var_7_75) : var_7_75;
+var var_19_37 = XOR_STR(var_19_37, var_55_63);
+var var_19_37 = btoa("" + var_19_37);
+var var_67_72 = 84.91;
+var_82_53[var_67_72] = var_19_37;
+var var_2_63 = 30.7;
+var var_10_03 = 27.36;
+var var_50_45 = "random";
+var var_50_45 = window["Math"]["random"];
+var var_90_49 = var_50_45();
+var var_90_49 = XOR_STR(var_90_49, var_90_49);
+var var_86_99 = 94.12;
+var var_87_58 = var_33_97();
+Math.abs(var_43_93 - var_87_58) > var_61_37 ? var_7_75 = var_20_04 : null;
+var var_7_75 = var_7_75 !== void 0 ? (mem["99.65"] = "16.1", var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (var_10_27(var_10_27, mem["82.53"], var_99_65, var_87_58) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (atob("" + var_7_75) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (XOR_STR(var_7_75, mem["42.48"]) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (JSON.parse(var_7_75) || var_7_75) : var_7_75;
+var var_90_49 = btoa("" + var_90_49);
+var_82_53[var_2_63] = var_90_49;
+var var_87_58 = var_33_97();
+Math.abs(var_43_93 - var_87_58) > var_61_37 ? var_7_75 = var_20_04 : null;
+var var_7_75 = var_7_75 !== void 0 ? (mem["99.65"] = "33.47", var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (var_10_27(var_10_27, mem["82.53"], var_99_65, var_87_58) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (atob("" + var_7_75) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (XOR_STR(var_7_75, mem["42.48"]) || var_7_75) : var_7_75;
+var var_7_75 = var_7_75 !== void 0 ? (JSON.parse(var_7_75) || var_7_75) : var_7_75;
+var var_90_49 = var_50_45();
+var_82_53[var_10_03] = var_90_49;
+var var_44_95 = "setItem";
+var var_44_95 = window["localStorage"]["setItem"].bind(window["localStorage"]);
+var var_19_53 = "a757407bfe6f217d";
+var var_94_65 = 9.28;
+var var_3_39 = 4;
+var var_66_06 = 73.37;
+var var_94_65 = btoa("" + var_94_65);
+var_82_53[var_66_06] = var_94_65;
+var_44_95(var_19_53, var_3_39);
+var var_20_04 = var_20_04 !== void 0 ? (mem["42.48"] = "29.18", var_20_04) : var_20_04;
+var var_20_04 = var_20_04 !== void 0 ? (atob("" + var_20_04) || var_20_04) : var_20_04;
+var var_20_04 = var_20_04 !== void 0 ? (XOR_STR(var_20_04, mem["42.48"]) || var_20_04) : var_20_04;
+var var_20_04 = var_20_04 !== void 0 ? (JSON.parse(var_20_04) || var_20_04) : var_20_04;
+var var_86_99 = 85.19;
+var var_82_53 = JSON.stringify(var_82_53);
+var var_94_65 = 90.33;
+var var_82_53 = XOR_STR(var_82_53, var_55_63);
+console.log(btoa("" + var_82_53));
