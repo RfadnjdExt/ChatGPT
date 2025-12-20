@@ -66,6 +66,9 @@ async def create_conversation(request: ConversationRequest):
         else:
             answer: str = ChatGPT(proxy).ask_question(request.message)
         
+        print(f"DEBUG: AI ANSWER={answer}") # Debug Output
+
+        
         return {
             "status": "success",
             "result": answer
