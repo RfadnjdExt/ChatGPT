@@ -7,6 +7,10 @@ from uvicorn      import run
 
 app = FastAPI()
 
+@app.get("/")
+def read_root():
+    return {"status": "running", "message": "EsaGo Chat Server is Active!"}
+
 class ConversationRequest(BaseModel):
     proxy: str
     message: str
