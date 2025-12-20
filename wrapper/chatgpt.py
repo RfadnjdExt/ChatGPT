@@ -20,28 +20,10 @@ class ChatGPT:
         self.session: requests.session.Session = requests.Session(impersonate="chrome133a")
         self.session.headers = Headers.DEFAULT
         self.data: dict = {}
+        self.proxy_path = proxy  # Save original proxy arg (file path, list, or string)
         
         if proxy:
-            if os.path.isfile(proxy):
-                with open(proxy, "r") as f:
-                    proxies = [line.strip() for line in f if line.strip()]
-                    if proxies:
-                        proxy = choice(proxies)
-                        Log.Info(f"Rotated to proxy: {proxy}")
-            
-            elif isinstance(proxy, list):
-                proxy = choice(proxy)
-                Log.Info(f"Rotated to proxy: {proxy}")
-
-            # Parse ip:port:user:pass format
-            if proxy and len(proxy.split(":")) == 4:
-                parts = proxy.split(":")
-                proxy = f"http://{parts[2]}:{parts[3]}@{parts[0]}:{parts[1]}"
-                Log.Info(f"Formatted proxy to: {proxy}")
-
-            self.session.proxies = {
-                "all": proxy # format http://user:pass@ip:port
-            }
+            self._set_proxy()
             
         self.ip_info: list = IP_Info.fetch_info(self.session)
         Log.Info(f"Current IP: {self.ip_info[0]} ({self.ip_info[1]})")
@@ -51,11 +33,59 @@ class ChatGPT:
             self.tz = timezone.utc
             
         self.timezone_offset: int = int(datetime.now(self.tz).utcoffset().total_seconds() / 60)
+        
+        # ... rest of init ...
+
+    def _set_proxy(self) -> None:
+        proxy = self.proxy_path
+        if not proxy:
+            return
+
+        selected_proxy = None
+        if isinstance(proxy, str) and os.path.isfile(proxy):
+            with open(proxy, "r") as f:
+                proxies = [line.strip() for line in f if line.strip()]
+                if proxies:
+                    selected_proxy = choice(proxies)
+                    Log.Info(f"Rotated to proxy from file: {selected_proxy}")
+        
+        elif isinstance(proxy, list):
+            selected_proxy = choice(proxy)
+            Log.Info(f"Rotated to proxy from list: {selected_proxy}")
+        
+        else:
+            # Single string proxy
+            selected_proxy = proxy
+
+        if selected_proxy:
+            # Parse ip:port:user:pass format ONLY if it doesn't look like a standard URL
+            # Standard URL: http://user:pass@ip:port
+            if "@" not in selected_proxy and len(selected_proxy.split(":")) == 4:
+                parts = selected_proxy.split(":")
+                selected_proxy = f"http://{parts[2]}:{parts[3]}@{parts[0]}:{parts[1]}"
+                Log.Info(f"Formatted proxy to: {selected_proxy}")
+            
+            # Ensure protocol
+            if not selected_proxy.startswith("http"):
+                 selected_proxy = "http://" + selected_proxy
+
+            self.session.proxies = {
+                "all": selected_proxy
+            }
+            
+        self.ip_info: list = IP_Info.fetch_info(self.session)
+        Log.Info(f"Current IP: {self.ip_info[0]} ({self.ip_info[1]})")
+        try:
+            self.tz = ZoneInfo(self.ip_info[5])
+        except Exception:
+            self.tz = timezone.utc
+            
         self.reacts: list = [
             "location",
             "__reactContainer$" + self._generate_react(),
             "_reactListening" + self._generate_react(),
         ]
+
         self.window_keys: list = [
             "0",
             "window",
