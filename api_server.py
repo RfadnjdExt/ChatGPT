@@ -1,4 +1,5 @@
 from fastapi      import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
 from urllib.parse import urlparse, ParseResult
 from pydantic     import BaseModel
 from wrapper      import ChatGPT
@@ -37,6 +38,7 @@ def format_proxy(proxy: str) -> str:
         if parsed.scheme not in ("http", "https", ""):
             raise ValueError("Invalid scheme")
 
+
         if not parsed.hostname or not parsed.port:
              # Try fallback if urlparse failed to get port from some weird string
              raise ValueError("Missing hostname or port")
@@ -51,6 +53,30 @@ def format_proxy(proxy: str) -> str:
     except Exception as e:
          # Fallback for weird parsing errors (like the one user saw)
         raise HTTPException(status_code=400, detail=f"Proxy parsing failed: {str(e)}")
+
+@app.post("/conversation_stream")
+async def create_conversation_stream(request: ConversationRequest):
+    if request.proxy:
+        proxy = format_proxy(request.proxy)
+    else:
+        proxy = None
+    
+    try:
+        # Create a generator for the stream
+        def iter_response():
+            chat = ChatGPT(proxy)
+            if request.image:
+                generator = chat.ask_stream(request.message, request.image)
+            else:
+                generator = chat.ask_stream(request.message)
+            
+            for chunk in generator:
+                yield chunk
+        
+        return StreamingResponse(iter_response(), media_type="text/plain")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
 @app.post("/conversation")
 async def create_conversation(request: ConversationRequest):
