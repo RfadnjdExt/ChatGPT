@@ -11,6 +11,7 @@ from typing       import Any
 from base64       import b64decode
 from PIL import Image
 from io import BytesIO
+import re
 
 
 class ChatGPT:
@@ -349,20 +350,41 @@ class ChatGPT:
         return (''.join(result)).replace("\n", "")
         
     def _fetch_cookies(self) -> None:
-        retries = 3
+        retries = 5
         for attempt in range(retries):
             try:
                 load_site: requests.models.Response = self.session.get("https://chatgpt.com")
                 self.session.cookies.update(load_site.cookies)
 
-                self.data["prod"] = load_site.text.split('data-build="')[1].split('"')[0]
+                # Try standard split
+                try:
+                    self.data["prod"] = load_site.text.split('data-build="')[1].split('"')[0]
+                except IndexError:
+                    # Fallback or debug
+                    Log.Error(f"Parsing 'data-build' failed. Status: {load_site.status_code}")
+                    # Print title for debugging
+                    title_match = re.search(r'<title>(.*?)</title>', load_site.text)
+                    title = title_match.group(1) if title_match else "No Title"
+                    Log.Error(f"Page Title: {title}")
+                    
+                    # If it's a challenge, we can't do much but retry.
+                    # If it's a DOM change, we might need a regex.
+                    # Let's try regex for build id just in case format changed slightly
+                    build_match = re.search(r'data-build="([^"]+)"', load_site.text)
+                    if build_match:
+                        self.data["prod"] = build_match.group(1)
+                    else:
+                        raise IndexError("Could not find data-build")
+
                 break
-            except (IndexError, requests.errors.RequestsError) as e:
-                Log.Error(f"Attempt {attempt + 1}/{retries} failed. Blocked or Network Error. Rotating proxy...")
+            except (IndexError, requests.errors.RequestsError, Exception) as e:
+                Log.Error(f"Attempt {attempt + 1}/{retries} failed. {str(e)[:100]}. Rotating proxy...")
                 self._set_proxy()
                 if attempt == retries - 1:
                     Log.Error("All retry attempts failed. Please check your proxies.")
-                    exit(1)
+                    # Don't exit, maybe try without prod ID (risky) or just fail gracefully?
+                    # exit(1) is failing the valid server. Let's raise Exception so API returns 500 but keeps running.
+                    raise Exception("Failed to connect to ChatGPT. All proxies failed.")
         self.data["device-id"] = self.session.cookies.get("oai-did")
         
         self.start_time: int = int(time() * 1000)
