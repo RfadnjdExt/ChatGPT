@@ -34,16 +34,7 @@ class ChatGPT:
             
         self.timezone_offset: int = int(datetime.now(self.tz).utcoffset().total_seconds() / 60)
         
-        # ... rest of init ...
 
-
-            
-        self.ip_info: list = IP_Info.fetch_info(self.session)
-        Log.Info(f"Current IP: {self.ip_info[0]} ({self.ip_info[1]})")
-        try:
-            self.tz = ZoneInfo(self.ip_info[5])
-        except Exception:
-            self.tz = timezone.utc
             
         self.reacts: list = [
             "location",
