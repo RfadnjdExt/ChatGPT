@@ -1,8 +1,9 @@
 from wrapper      import Log, Utils, Headers, Challenges, VM, IP_Info
-from random       import randint, random, choice
+from random       import randint, random, choice, shuffle
 from zoneinfo     import ZoneInfo
 from curl_cffi    import requests
-from datetime     import datetime
+from datetime     import datetime, timezone
+import os
 from uuid         import uuid4
 from json         import loads
 from time         import time
@@ -10,6 +11,7 @@ from typing       import Any
 from base64       import b64decode
 from PIL import Image
 from io import BytesIO
+import re
 
 
 class ChatGPT:
@@ -19,20 +21,28 @@ class ChatGPT:
         self.session: requests.session.Session = requests.Session(impersonate="chrome133a")
         self.session.headers = Headers.DEFAULT
         self.data: dict = {}
+        self.proxy_path = proxy  # Save original proxy arg (file path, list, or string)
         
         if proxy:
-            
-            self.session.proxies = {
-                "all": proxy # format http://user:pass@ip:port
-            }
+            self._set_proxy()
             
         self.ip_info: list = IP_Info.fetch_info(self.session)
-        self.timezone_offset: int = int(datetime.now(ZoneInfo(self.ip_info[5])).utcoffset().total_seconds() / 60)
+        Log.Info(f"Current IP: {self.ip_info[0]} ({self.ip_info[1]})")
+        try:
+            self.tz = ZoneInfo(self.ip_info[5])
+        except Exception:
+            self.tz = timezone.utc
+            
+        self.timezone_offset: int = int(datetime.now(self.tz).utcoffset().total_seconds() / 60)
+        
+
+            
         self.reacts: list = [
             "location",
             "__reactContainer$" + self._generate_react(),
             "_reactListening" + self._generate_react(),
         ]
+
         self.window_keys: list = [
             "0",
             "window",
@@ -340,11 +350,41 @@ class ChatGPT:
         return (''.join(result)).replace("\n", "")
         
     def _fetch_cookies(self) -> None:
-        
-        load_site: requests.models.Response = self.session.get("https://chatgpt.com")
-        self.session.cookies.update(load_site.cookies)
+        retries = 5
+        for attempt in range(retries):
+            try:
+                load_site: requests.models.Response = self.session.get("https://chatgpt.com")
+                self.session.cookies.update(load_site.cookies)
 
-        self.data["prod"] = load_site.text.split('data-build="')[1].split('"')[0]
+                # Try standard split
+                try:
+                    self.data["prod"] = load_site.text.split('data-build="')[1].split('"')[0]
+                except IndexError:
+                    # Fallback or debug
+                    Log.Error(f"Parsing 'data-build' failed. Status: {load_site.status_code}")
+                    # Print title for debugging
+                    title_match = re.search(r'<title>(.*?)</title>', load_site.text)
+                    title = title_match.group(1) if title_match else "No Title"
+                    Log.Error(f"Page Title: {title}")
+                    
+                    # If it's a challenge, we can't do much but retry.
+                    # If it's a DOM change, we might need a regex.
+                    # Let's try regex for build id just in case format changed slightly
+                    build_match = re.search(r'data-build="([^"]+)"', load_site.text)
+                    if build_match:
+                        self.data["prod"] = build_match.group(1)
+                    else:
+                        raise IndexError("Could not find data-build")
+
+                break
+            except (IndexError, requests.errors.RequestsError, Exception) as e:
+                Log.Error(f"Attempt {attempt + 1}/{retries} failed. {str(e)[:100]}. Rotating proxy...")
+                self._set_proxy()
+                if attempt == retries - 1:
+                    Log.Error("All retry attempts failed. Please check your proxies.")
+                    # Don't exit, maybe try without prod ID (risky) or just fail gracefully?
+                    # exit(1) is failing the valid server. Let's raise Exception so API returns 500 but keeps running.
+                    raise Exception("Failed to connect to ChatGPT. All proxies failed.")
         self.data["device-id"] = self.session.cookies.get("oai-did")
         
         self.start_time: int = int(time() * 1000)
@@ -352,7 +392,7 @@ class ChatGPT:
         
         self.data["config"] = [
             4880,
-            datetime.now(ZoneInfo(self.ip_info[5])).strftime(f"%a %b %d %Y %H:%M:%S GMT%z ({datetime.now(ZoneInfo(self.ip_info[5])).tzname()})"),
+            datetime.now(self.tz).strftime(f"%a %b %d %Y %H:%M:%S GMT%z ({datetime.now(self.tz).tzname()})"),
             4294705152,
             random(),
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
@@ -384,7 +424,7 @@ class ChatGPT:
         
         self.data["config"] = [
             4880,
-            datetime.now(ZoneInfo(self.ip_info[5])).strftime(f"%a %b %d %Y %H:%M:%S GMT%z ({datetime.now(ZoneInfo(self.ip_info[5])).tzname()})"),
+            datetime.now(self.tz).strftime(f"%a %b %d %Y %H:%M:%S GMT%z ({datetime.now(self.tz).tzname()})"),
             4294705152,
             random(),
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
@@ -809,10 +849,146 @@ class ChatGPT:
         self.response = self._parse_event_stream(conversation_request.text)
     
     def ask_question(self, message: str, image: str = None) -> str:
-        
         if not image:
             self.start_conversation(message)
         else:
             self.start_with_image(message, image)
-        
         return self.response
+
+    def ask_stream(self, message: str, image: str = None):
+        """Yields chunks of the answer as they arrive."""
+        if image:
+             # Not supporting image stream yet for simplicity in this quick refactor
+             # Actually start_with_image uses start_conversation internally so we can support it
+             # But let's stick to text for now or verify start_conversation usage.
+             self.upload_image(image)
+             
+        # Re-implement start_conversation logic but with stream=True
+        self._get_tokens()
+        conduit_token: str = self.get_conduit()
+        
+        time_1: int = randint(6000, 9000)
+        proof_token: str = Challenges.solve_pow(self.data["proofofwork"]["seed"], self.data["proofofwork"]["difficulty"], self.data["config"])
+        turnstile_token: str = VM.get_turnstile(self.data["bytecode"], self.data["vm_token"], str(self.ip_info[:-1]))
+
+        self.session.headers = Headers.CONVERSATION
+        self.session.headers.update({
+            'oai-client-version': self.data["prod"],
+            'oai-device-id': self.data["device-id"],
+            'oai-echo-logs': f'0,{time_1},1,{time_1 + randint(1000, 1200)}',
+            'openai-sentinel-chat-requirements-token': self.data["token"],
+            'openai-sentinel-proof-token': proof_token,
+            'openai-sentinel-turnstile-token': turnstile_token,
+            'x-conduit-token': conduit_token,
+        })
+
+        conversation_data: dict = {
+            'action': 'next',
+            'messages': [
+                {
+                    'id': str(uuid4()),
+                    'author': {'role': 'user'},
+                    'create_time': round(time(), 3),
+                    'content': {
+                        'content_type': 'text',
+                        'parts': [message],
+                    },
+                    'metadata': {
+                        'selected_github_repos': [],
+                        'selected_all_github_repos': False,
+                        'serialization_metadata': {'custom_symbol_offsets': []},
+                    },
+                },
+            ],
+            'parent_message_id': 'client-created-root',
+            'model': 'auto',
+            'timezone_offset_min': self.timezone_offset,
+            'timezone': self.ip_info[5],
+            'history_and_training_disabled': True,
+            'conversation_mode': {'kind': 'primary_assistant'},
+            'enable_message_followups': True,
+            'system_hints': [],
+            'supports_buffering': True,
+            'supported_encodings': ['v1'],
+            'client_contextual_info': {
+                'is_dark_mode': True,
+                'time_since_loaded': randint(3, 6),
+                'page_height': 1219,
+                'page_width': 3440,
+                'pixel_ratio': 1,
+                'screen_height': 1440,
+                'screen_width': 3440,
+            },
+            'paragen_cot_summary_display_override': 'allow',
+            'force_parallel_switch': 'auto',
+        }
+        
+        # STREAM REQUEST
+        response = self.session.post(
+            'https://chatgpt.com/backend-anon/f/conversation', 
+            json=conversation_data, 
+            stream=True
+        )
+        
+        # Process Stream
+        for line in response.iter_lines():
+            if line:
+                decoded_line = line.decode('utf-8')
+                if decoded_line.startswith('data:'):
+                    data_str = decoded_line[5:].strip()
+                    if data_str == '[DONE]':
+                        break
+                    try:
+                        data = loads(data_str)
+                        # Extract content just like _parse_event_stream
+                        content = None
+                        if data.get('o') == 'append' and data.get('p') == '/message/content/parts/0':
+                            content = data.get('v')
+                        elif data.get('o') == 'patch' and isinstance(data.get('v'), list):
+                            for op in data.get('v'):
+                                if op.get('o') == 'append' and op.get('p') == '/message/content/parts/0':
+                                    content = op.get('v')
+                        elif 'v' in data and isinstance(data['v'], str):
+                             content = data['v']
+                        
+                        if content:
+                            yield content
+                    except Exception:
+                        pass
+
+    def _set_proxy(self) -> None:
+        proxy = self.proxy_path
+        if not proxy:
+            return
+
+        selected_proxy = None
+        if isinstance(proxy, str) and os.path.isfile(proxy):
+            with open(proxy, "r") as f:
+                proxies = [line.strip() for line in f if line.strip()]
+                if proxies:
+                    selected_proxy = choice(proxies)
+                    Log.Info(f"Rotated to proxy from file: {selected_proxy}")
+        
+        elif isinstance(proxy, list):
+            selected_proxy = choice(proxy)
+            Log.Info(f"Rotated to proxy from list: {selected_proxy}")
+        
+        else:
+            # Single string proxy
+            selected_proxy = proxy
+
+        if selected_proxy:
+            # Parse ip:port:user:pass format ONLY if it doesn't look like a standard URL
+            # Standard URL: http://user:pass@ip:port
+            if "@" not in selected_proxy and len(selected_proxy.split(":")) == 4:
+                parts = selected_proxy.split(":")
+                selected_proxy = f"http://{parts[2]}:{parts[3]}@{parts[0]}:{parts[1]}"
+                Log.Info(f"Formatted proxy to: {selected_proxy}")
+            
+            # Ensure protocol
+            if not selected_proxy.startswith("http"):
+                 selected_proxy = "http://" + selected_proxy
+
+            self.session.proxies = {
+                "all": selected_proxy
+            }

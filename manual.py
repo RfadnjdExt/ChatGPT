@@ -1,3 +1,3 @@
 from wrapper import ChatGPT
 
-print(ChatGPT().ask_question("Test"))
+print(ChatGPT().ask_question("Kok saia?"))
