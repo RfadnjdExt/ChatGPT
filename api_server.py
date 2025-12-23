@@ -71,7 +71,9 @@ async def create_conversation_stream(request: ConversationRequest):
                 generator = chat.ask_stream(request.message)
             
             for chunk in generator:
+                # print(f"[VERBOSE] Yielding chunk: {chunk[:20] if chunk else 'Empty'}...")
                 yield chunk
+            print(f"[VERBOSE] Stream finished.")
         
         return StreamingResponse(iter_response(), media_type="text/plain")
 

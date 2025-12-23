@@ -950,11 +950,22 @@ class ChatGPT:
         }
         
         # STREAM REQUEST
+        print(f"[VERBOSE] Sending conversation request to chatgpt.com...")
         response = self.session.post(
             'https://chatgpt.com/backend-anon/f/conversation', 
             json=conversation_data, 
             stream=True
         )
+
+        if response.status_code != 200:
+            print(f"[ERROR] Conversation API failed with status: {response.status_code}")
+            try:
+                print(f"[ERROR] Response Body: {response.text[:200]}")
+            except:
+                pass
+            raise Exception(f"Conversation API Error: {response.status_code}")
+        
+        print(f"[VERBOSE] Stream connection established (200 OK). Reading line by line...")
         
         # Process Stream
         for line in response.iter_lines():
