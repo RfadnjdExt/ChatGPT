@@ -456,6 +456,7 @@ class ChatGPT:
         
         else:
             Log.Error("Something went wrong while fetching chat requirements")
+            raise Exception(f"Failed to fetch chat requirements (Status: {requirements_request.status_code})")
     
     def get_conduit(self, next: bool = False) -> str:
         self.session.headers = Headers.CONDUIT
@@ -511,7 +512,7 @@ class ChatGPT:
         else:
             Log.Error("Something went wrong while fetching conduit token: ")
             Log.Error(conduit_request.text)
-            return None
+            raise Exception("Failed to fetch conduit token")
     
     def start_conversation(self, message: str) -> None:
         
