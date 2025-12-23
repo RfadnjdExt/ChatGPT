@@ -419,50 +419,69 @@ class ChatGPT:
     
     def _get_tokens(self, process_time: int=randint(1400, 2000)) -> None:
         
-        self.session.headers = Headers.REQUIREMENTS
-        self.session.headers.update({
-            'oai-client-version': self.data["prod"],
-            'oai-device-id': self.data["device-id"],
-        })
-        
-        p_value: str = Challenges.generate_token(self.data["config"])
-        self.data["vm_token"] = p_value
-        
-        self.data["config"] = [
-            4880,
-            datetime.now(self.tz).strftime(f"%a %b %d %Y %H:%M:%S GMT%z ({datetime.now(self.tz).tzname()})"),
-            4294705152,
-            random(),
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-            None,
-            self.data["prod"],
-            "de-DE",
-            "de-DE,de,en-US,en",
-            random(),
-            "webkitGetUserMedia−function webkitGetUserMedia() { [native code] }",
-            choice(self.reacts),
-            choice(self.window_keys),
-            process_time + random(),
-            self.sid,
-            "",
-            20,
-            self.start_time
-        ]
-        
-        requirements_data: dict = {
-            'p': p_value,
-        }
-        
-        requirements_request: requests.models.Response = self.session.post('https://chatgpt.com/backend-anon/sentinel/chat-requirements', json=requirements_data)
+        retries = 15
+        for attempt in range(retries):
+            self.session.headers = Headers.REQUIREMENTS
+            self.session.headers.update({
+                'oai-client-version': self.data["prod"],
+                'oai-device-id': self.data["device-id"],
+            })
+            
+            p_value: str = Challenges.generate_token(self.data["config"])
+            self.data["vm_token"] = p_value
+            
+            self.data["config"] = [
+                4880,
+                datetime.now(self.tz).strftime(f"%a %b %d %Y %H:%M:%S GMT%z ({datetime.now(self.tz).tzname()})"),
+                4294705152,
+                random(),
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+                None,
+                self.data["prod"],
+                "de-DE",
+                "de-DE,de,en-US,en",
+                random(),
+                "webkitGetUserMedia−function webkitGetUserMedia() { [native code] }",
+                choice(self.reacts),
+                choice(self.window_keys),
+                process_time + random(),
+                self.sid,
+                "",
+                20,
+                self.start_time
+            ]
+            
+            requirements_data: dict = {
+                'p': p_value,
+            }
+            
+            try:
+                requirements_request: requests.models.Response = self.session.post('https://chatgpt.com/backend-anon/sentinel/chat-requirements', json=requirements_data)
 
-        if requirements_request.status_code == 200:
-            self.data["token"] = requirements_request.json().get("token")
-            self.data["proofofwork"] = requirements_request.json().get("proofofwork")
-            self.data["bytecode"] = requirements_request.json().get("turnstile").get("dx")
-        
-        else:
-            Log.Error("Something went wrong while fetching chat requirements")
-            raise Exception(f"Failed to fetch chat requirements (Status: {requirements_request.status_code})")
+                if requirements_request.status_code == 200:
+                    self.data["token"] = requirements_request.json().get("token")
+                    self.data["proofofwork"] = requirements_request.json().get("proofofwork")
+                    self.data["bytecode"] = requirements_request.json().get("turnstile").get("dx")
+                    return # Success
+                
+                else:
+                    Log.Error(f"Attempt {attempt + 1}/{retries} failed to fetch chat requirements (Status: {requirements_request.status_code})")
+                    
+                    if attempt == retries - 1:
+                        raise Exception(f"Failed to fetch chat requirements (Status: {requirements_request.status_code})")
+                    
+                    # Sleep and Rotate
+                    sleep_time = randint(1, 4)
+                    sleep(sleep_time)
+                    self._set_proxy()
+
+            except Exception as e:
+                Log.Error(f"Attempt {attempt + 1}/{retries} error: {str(e)}")
+                if attempt == retries - 1:
+                     raise e
+                sleep_time = randint(1, 4)
+                sleep(sleep_time)
+                self._set_proxy()
     
     def get_conduit(self, next: bool = False) -> str:
         self.session.headers = Headers.CONDUIT
