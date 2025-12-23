@@ -6,7 +6,7 @@ from datetime     import datetime, timezone
 import os
 from uuid         import uuid4
 from json         import loads
-from time         import time
+from time         import time, sleep
 from typing       import Any
 from base64       import b64decode
 from PIL import Image
@@ -350,7 +350,7 @@ class ChatGPT:
         return (''.join(result)).replace("\n", "")
         
     def _fetch_cookies(self) -> None:
-        retries = 5
+        retries = 15 # Aggressive retry
         for attempt in range(retries):
             try:
                 load_site: requests.models.Response = self.session.get("https://chatgpt.com")
@@ -379,6 +379,12 @@ class ChatGPT:
                 break
             except (IndexError, requests.errors.RequestsError, Exception) as e:
                 Log.Error(f"Attempt {attempt + 1}/{retries} failed. {str(e)[:100]}. Rotating proxy...")
+                
+                # Random sleep 1-4 seconds to avoid rate limits
+                sleep_time = randint(1, 4)
+                # Log.Info(f"Sleeping for {sleep_time}s...")
+                sleep(sleep_time)
+
                 self._set_proxy()
                 if attempt == retries - 1:
                     Log.Error("All retry attempts failed. Please check your proxies.")
