@@ -13,7 +13,7 @@ def read_root():
     return {"status": "running", "message": "EsaGo Chat Server is Active!"}
 
 class ConversationRequest(BaseModel):
-    proxy: str
+    proxy: str = None
     message: str
     image: str = None
 
